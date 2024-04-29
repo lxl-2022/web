@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ill.web.Mapper.UserMapper">
+
+	  <select id="count" resultType="Long">
+		  select count(*)
+		   from img
+		   <where>
+			   <if test="uid != null">
+				   uid = #{uid}
+			   </if>
+			   <if test="tag != null">
+				   and tag like concat("%",#{tag},"%" )
+			   </if>
+		   </where>
+	  </select>
+	  
+	  <select id="search" resultType="com.ill.web.pojo.Img">
+		  select * 
+		   from img	  
+		   <where>
+		   <if test="uid != null">
+			   uid = #{uid}
+		   </if> 
+		   <if test="tag != null">
+			   and tag like concat("%",#{tag},"%" )			   
+		   </if>
+		   </where> 
+		   limit #{start},#{pagesize}
+	  </select>
+	  
+		<insert id="insert">
+		insert into img (uid,tag,author)"+" values (#{uid},#{tag},#{author})
+		</insert>
+		
+		<delete id="delete">
+			delete 
+			from img 
+			where id in 
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+				#{id}
+			</foreach>
+		</delete>
+		
+	<select id="deleteSearch" resultType="com.ill.web.pojo.Imgfile">
+		  select uid,format
+		   from img	  
+			whrer id in 
+			<foreach collection="ids" item="id" separator="," open="(" close=")">
+				#{id}
+			</foreach>
+	  </select>
+		
+		
+	<update id="update">
+			update img
+			set	  
+				<if test="uid != null and uid != ''">
+					uid = #{uid},
+				</if>
+				<if test="tag != null and tag != ''">
+					tag = #{tag},
+				</if>
+				<if test="author  != null and author  != ''">
+					author = #{author},
+				</if>
+				 createTime = #{createTime},
+				updateTime = #{updateTime}
+			where id = #{id}		
+	  </update>
+  </mapper>
