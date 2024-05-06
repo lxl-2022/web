@@ -14,8 +14,8 @@ public class Demo {
         // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
         String endpoint = "https://oss-cn-beijing.aliyuncs.com";
         // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
-        String accessKeyId = "LTAI5tLHGM69TbwQNzGvJNGE";
-        String accessSecret = "V45hYLiaNe0Ui91Q5vjCyHo4c4eVGl";
+        String accessKeyId = "123";
+        String accessSecret = "123";
         // 填写Bucket名称，例如examplebucket。
         String bucketName = "web-pp1223";
         // 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。

@@ -12,8 +12,8 @@ import java.util.UUID;
 @Component
 public class AliOSSUtils {
     private String endpoint = "https://oss-cn-beijing.aliyuncs.com";
-    private String accessKeyId = "LTAI5tLHGM69TbwQNzGvJNGE";
-    private String accessSecret = "V45hYLiaNe0Ui91Q5vjCyHo4c4eVGl";
+    private String accessKeyId = "123";
+    private String accessSecret = "123";
     private String bucketName = "web-pp1223";
 
     public Imgfile upload(MultipartFile file,String uuid) throws IOException {
