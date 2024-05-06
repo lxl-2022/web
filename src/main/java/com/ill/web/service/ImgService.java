@@ -14,7 +14,7 @@ public interface ImgService {
 	
 	PageBean search(String uid,String tag,Integer page,Integer pagesize);
 	
-	void add(Img img,MultipartFile imgfile) throws IllegalStateException, IOException;
+	void add(Img img,MultipartFile[] imgfiles) throws IllegalStateException, IOException;
 	
 	void delete(List<Integer> ids);
 	

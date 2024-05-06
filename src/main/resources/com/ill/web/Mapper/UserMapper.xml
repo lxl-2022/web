@@ -9,8 +9,8 @@
 		  select count(*)
 		   from img
 		   <where>
-			   <if test="uid != null">
-				   uid = #{uid}
+			   <if test="uuid != null">
+				   uuid = #{uuid}
 			   </if>
 			   <if test="tag != null">
 				   and tag like concat("%",#{tag},"%" )
@@ -22,8 +22,8 @@
 		  select * 
 		   from img	  
 		   <where>
-		   <if test="uid != null">
-			   uid = #{uid}
+		   <if test="uuid != null">
+			   uuid = #{uuid}
 		   </if> 
 		   <if test="tag != null">
 			   and tag like concat("%",#{tag},"%" )			   
@@ -33,7 +33,7 @@
 	  </select>
 	  
 		<insert id="insert">
-		insert into img (uid,tag,author)"+" values (#{uid},#{tag},#{author})
+		insert into img (uuid,tag,author)"+" values (#{uuid},#{tag},#{author})
 		</insert>
 		
 		<delete id="delete">
@@ -46,9 +46,9 @@
 		</delete>
 		
 	<select id="deleteSearch" resultType="com.ill.web.pojo.Imgfile">
-		  select uid,format
+		  select uuid,url
 		   from img	  
-			whrer id in 
+			where id in
 			<foreach collection="ids" item="id" separator="," open="(" close=")">
 				#{id}
 			</foreach>
@@ -59,7 +59,7 @@
 			update img
 			set	  
 				<if test="uid != null and uid != ''">
-					uid = #{uid},
+					uuid = #{uuid},
 				</if>
 				<if test="tag != null and tag != ''">
 					tag = #{tag},

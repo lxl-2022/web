@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import com.ill.web.utils.AliOSSUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,16 +23,14 @@ public class ImgServiceImpl implements ImgService {
 
 	@Autowired
 	private UserMapper usermapper;
+
+	@Autowired AliOSSUtils aliOSSUtils;
 	
 	@Override
-	public PageBean search(String uid,String tag,Integer page,Integer pagesize) {
-		Long count = usermapper.count(uid,tag);
-		System.out.println(count);
-		System.out.println(uid);
-		System.out.println(page);
-		System.out.println(pagesize);
+	public PageBean search(String uuid,String tag,Integer page,Integer pagesize) {
+		Long count = usermapper.count(uuid,tag);
 		Integer start =(page-1)*pagesize;
-		List<Img> imglist = usermapper.search(uid,tag,start,pagesize);
+		List<Img> imglist = usermapper.search(uuid,tag,start,pagesize);
 
 		Iterator iterator=imglist.iterator();
 
@@ -45,17 +44,18 @@ public class ImgServiceImpl implements ImgService {
 	}
 	
 	@Override
-	public void add(Img img,MultipartFile imgfile) throws IllegalStateException, IOException {
+	public void add(Img img,MultipartFile[] imgfiles) throws IllegalStateException, IOException {
 		img.setCreateTime(LocalDateTime.now());
 		img.setUpdateTime(LocalDateTime.now());
-		String originalFilename = imgfile.getOriginalFilename();
-		int index = originalFilename.lastIndexOf(",");
-		String uuid = UUID.randomUUID().toString();
-		img.setUid(uuid);
-		String newFilename = uuid + originalFilename.substring(index);
-		imgfile.transferTo(new File("H:\\project\\data\\"+newFilename));
-		usermapper.insert(img);
-
+		int num = 0;
+		String uuid =  UUID.randomUUID().toString();
+		for(MultipartFile imgfile:imgfiles) {
+			Imgfile imgf1 = aliOSSUtils.upload(imgfile,uuid+"_"+num);
+			num+=1;
+			img.setUuid(uuid);
+			img.setUrl(imgf1.getUrl());
+			usermapper.insert(img);
+		}
 	}
 
 	
@@ -63,8 +63,7 @@ public class ImgServiceImpl implements ImgService {
 	public void delete(List<Integer> ids) {
 		List<Imgfile> imgs= usermapper.deleteSearch(ids);
 		for(Imgfile img : imgs) {
-			File imgfile = new File(img.getUid()+"."+img.getFormat());
-			imgfile.delete();
+			aliOSSUtils.delete(img.getUrl());
 		}	
 		usermapper.delete(ids);
 	}

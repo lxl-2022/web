@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Imgfile {
-	private String uid;
-    private String format;
+    private String url;
+	private String uuid;
+
 }

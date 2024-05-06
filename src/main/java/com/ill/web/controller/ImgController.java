@@ -2,6 +2,7 @@ package com.ill.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,9 +53,9 @@ public class ImgController {
 	}
 	//请求体中的要用 RequestBody
 	@PostMapping
-	public Result save(@RequestBody Img img,MultipartFile imgfile) throws IllegalStateException, IOException{
-		log.info("添加");		
-		imgService.add(img,imgfile);
+	public Result save(@RequestBody Img img,MultipartFile[] imgfiles) throws IllegalStateException, IOException{
+		log.info("添加");
+		imgService.add(img,imgfiles);
 		return Result.success();
 	}
 	

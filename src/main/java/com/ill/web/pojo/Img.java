@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Img {
 	private String uid;
+	private String uuid;
 	private Integer id;
 	private String tag;
 	private List<String> taglist;
@@ -22,7 +23,8 @@ public class Img {
 	private Integer num;
     private LocalDateTime createTime; //创建时间
     private LocalDateTime updateTime; //修改时间
-    private String format;
+    private String url;
+
 
 
 	public void listtag() {
