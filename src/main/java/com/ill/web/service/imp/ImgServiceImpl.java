@@ -79,17 +79,16 @@ public class ImgServiceImpl implements ImgService {
 	public void update(Img img,MultipartFile imgfile) throws IllegalStateException, IOException{
 		img.setUpdateTime(LocalDateTime.now());
 		if(imgfile != null){
-			
-			File imgfile1 = new File(img.getUid()+"."+img.getFormat());
-			imgfile1.delete();	
-			
-			String originalFilename = imgfile.getOriginalFilename();
-			int index = originalFilename.lastIndexOf(",");
-			String uuid = UUID.randomUUID().toString();
-			img.setUid(uuid);
-			img.setFormat(originalFilename.substring(index+1));
-			String newFilename = uuid + originalFilename.substring(index);
-			imgfile.transferTo(new File("H:\\project\\data\\"+newFilename));
+
+			aliOSSUtils.delete(img.getUrl());
+
+			img.setCreateTime(LocalDateTime.now());
+			img.setUpdateTime(LocalDateTime.now());
+
+			String url = img.getUrl();
+			Imgfile imgf1 = aliOSSUtils.upload(imgfile,url.split("/")[1].split(".")[0]);
+			img.setUrl(imgf1.getUrl());
+			usermapper.insert(img);
 			}
 		usermapper.update(img);
 		
