@@ -1,6 +1,8 @@
 package com.ill.web.utils;
 
 import com.aliyun.oss.*;
+import com.aliyun.oss.common.auth.CredentialsProviderFactory;
+import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
 import com.ill.web.pojo.Imgfile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,9 +14,12 @@ import java.util.UUID;
 @Component
 public class AliOSSUtils {
     private String endpoint = "https://oss-cn-beijing.aliyuncs.com";
-    private String accessKeyId = "123";
-    private String accessSecret = "123";
+    EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
+
     private String bucketName = "web-pp1223";
+
+    public AliOSSUtils() throws com.aliyuncs.exceptions.ClientException {
+    }
 
     public Imgfile upload(MultipartFile file,String uuid) throws IOException {
         //获取文件的输入流
@@ -25,7 +30,7 @@ public class AliOSSUtils {
         String filename = uuid+ originalFilename.substring(originalFilename.lastIndexOf("."));
 
         //上传文件到OSS
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId,accessSecret);
+        OSS ossClient = new OSSClientBuilder().build(endpoint, credentialsProvider);
         ossClient.putObject(bucketName,filename,inputStream);
 
         //文件访问路径
@@ -40,7 +45,7 @@ public class AliOSSUtils {
 
     public void delete(String url) {
 
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId,accessSecret);
+        OSS ossClient = new OSSClientBuilder().build(endpoint, credentialsProvider);
 
         try {
             // 删除文件或目录。如果要删除目录，目录必须为空。
